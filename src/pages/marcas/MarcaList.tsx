@@ -7,12 +7,16 @@ import { Input } from "../../components/Input";
 import { Table } from "../../components/Table";
 import type { TableColumn } from "../../components/Table";
 import { Alert } from "../../components/Alert";
+import { Modal } from "../../components/Modal";
+import { api } from "../../service/api";
+import type { Modelo } from "../../models/Modelo";
 
 export function MarcaList() {
   const [marcas, setMarcas] = useState<Marca[]>([]);
   const [nome, setNome] = useState("");
   const [editandoId, setEditandoId] = useState<string | null>(null);
   const [erro, setErro] = useState("");
+  const [marcaParaExcluir, setMarcaParaExcluir] = useState<Marca | null>(null);
   const columns: TableColumn<Marca>[] = [
     { 
         header: "ID", 
@@ -73,18 +77,16 @@ export function MarcaList() {
   async function excluirMarca(marca: Marca) {
     if (!marca.id) return;
 
-    if (!window.confirm(`Excluir a marca ${marca.nome}?`)) return;
-
     try {
-      const modelos = await fetch("http://localhost:3001/modelos")
-        .then(resposta => resposta.json() as Promise<{ marcaId: string }[]>);
+      const modelos = await api.get<Modelo[]>("/modelos");
 
-      if (modelos.some(modelo => modelo.marcaId === marca.id)) {
+      if (modelos.data.some((modelo) => modelo.marcaId === marca.id)) {
         setErro("Esta marca possui modelos vinculados e não pode ser excluída.");
         return;
       }
 
       await marcaService.excluir(marca.id);
+      setMarcaParaExcluir(null);
       await carregarMarcas();
     } catch {
       setErro("Erro ao excluir marca.");
@@ -116,8 +118,18 @@ export function MarcaList() {
         columns={columns}
         data={marcas}
         onEdit={editarMarca}
-        onDelete={excluirMarca}
+        onDelete={(marca) => setMarcaParaExcluir(marca)}
         />
+      <Modal
+        show={marcaParaExcluir !== null}
+        title="Confirmar exclusão"
+        onClose={() => setMarcaParaExcluir(null)}
+        onConfirm={() => {
+          if (marcaParaExcluir) {
+            void excluirMarca(marcaParaExcluir);
+            }
+          }}
+        />  
     </div>
   );
 }
