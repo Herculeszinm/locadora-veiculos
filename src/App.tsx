@@ -4,6 +4,7 @@ import { Navbar } from "./components/Navbar";
 import { MarcaList } from "./pages/marcas/MarcaList";
 import { CategoriaList } from "./pages/categorias/CategoriaList";
 import { ModeloList } from "./pages/modelos/ModeloList";
+import { VeiculoList } from "./pages/veiculos/VeiculoList";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Navbar />
 
       <Routes>
+        <Route path="/veiculos" element={<VeiculoList />} />
         <Route path="/modelos" element={<ModeloList />} />
         <Route path="/categorias" element={<CategoriaList />} />
         <Route path="/" element={<Navigate to="/marcas" replace />} />

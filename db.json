@@ -60,6 +60,13 @@
       "ano": 2025,
       "marcaId": "3",
       "categoriaId": "3"
+    },
+    {
+      "nome": "Corolla",
+      "ano": 2012,
+      "marcaId": "Z2hP6elbt-0",
+      "categoriaId": "AuCUAtV_K5I",
+      "id": "lRW6S3o9Yv8"
     }
   ],
   "veiculos": [
