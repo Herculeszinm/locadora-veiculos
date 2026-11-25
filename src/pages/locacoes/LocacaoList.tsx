@@ -41,10 +41,26 @@ export function LocacaoList() {
   const [veiculoId, setVeiculoId] = useState("");
   const [dataRetirada, setDataRetirada] = useState("");
   const [dataDevolucao, setDataDevolucao] = useState("");
+  const [filtroStatus, setFiltroStatus] = useState("");
+  const [filtroCliente, setFiltroCliente] = useState("");
+
 
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [salvando, setSalvando] = useState(false);
+
+  const locacoesFiltradas = locacoes.filter((locacao) => {
+    const correspondeStatus =
+      filtroStatus === "" ||
+      locacao.status === filtroStatus;
+
+    const correspondeCliente =
+      filtroCliente === "" ||
+      locacao.clienteId === filtroCliente;
+
+  return correspondeStatus && correspondeCliente;
+  });
+
 
   async function carregarDados() {
     const [
@@ -366,9 +382,45 @@ export function LocacaoList() {
 
       <h4 className="mt-4">Locações registradas</h4>
 
+    <div className="row mb-3">
+      <div className="col-md-6">
+        <Select
+          label="Filtrar por status"
+          name="filtroStatus"
+          value={filtroStatus}
+          options={[
+            { value: "ABERTA", label: "Aberta" },
+            { value: "FINALIZADA", label: "Finalizada" },
+            { value: "CANCELADA", label: "Cancelada" },
+          ]}
+          onChange={(e) => setFiltroStatus(e.target.value)}
+        />
+      </div>
+
+    <div className="col-md-6">
+      <Select
+        label="Filtrar por cliente"
+        name="filtroCliente"
+        value={filtroCliente}
+        options={clientes
+          .filter((cliente) => cliente.id !== undefined)
+          .map((cliente) => ({
+            value: cliente.id!,
+            label: cliente.nome,
+          }))}
+      onChange={(e) => setFiltroCliente(e.target.value)}
+    />
+  </div>
+</div>
+
+<p className="text-muted">
+  {locacoesFiltradas.length} locação(ões) encontrada(s).
+</p>
+
+
       <Table<Locacao>
         columns={columns}
-        data={locacoes}
+        data={locacoesFiltradas}
       />
     </div>
   );
