@@ -98,7 +98,22 @@
       "modeloId": "3"
     }
   ],
-  "manutencoes": [],
+  "manutencoes": [
+    {
+      "data": "2026-03-06",
+      "descricao": "Arrumar o motor",
+      "valor": 1700,
+      "veiculoId": "2",
+      "id": "BGxaTdBZpxM"
+    },
+    {
+      "data": "2027-04-24",
+      "descricao": "Arrumar o motor",
+      "valor": 15000,
+      "veiculoId": "1",
+      "id": "MG5VzBxn3lU"
+    }
+  ],
   "clientes": [
     {
       "id": "1",
