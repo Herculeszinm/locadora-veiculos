@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 
@@ -6,10 +5,12 @@ import type { Manutencao } from "../../models/Manutencao";
 import type { Veiculo } from "../../models/Veiculo";
 import type { TableColumn } from "../../components/Table";
 import type { Modelo } from "../../models/Modelo";
+import type { StatusManutencao } from "../../models/Manutencao";
 
 import { manutencaoService } from "../../service/manutencaoService";
 import { veiculoService } from "../../service/veiculoService";
 import { modeloService } from "../../service/modeloService";
+import { locacaoService } from "../../service/locacaoService";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -35,18 +36,25 @@ export function ManutencaoList() {
 
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
+  const [statusManutencao, setStatusManutencao] = useState<StatusManutencao>("CONCLUIDA");
 
-Promise.all([
-  manutencaoService.listar(),
-  veiculoService.listar(),
-  modeloService.listar(),
-])
-  .then(([dadosManutencoes, dadosVeiculos, dadosModelos]) => {
-    setManutencoes(dadosManutencoes);
-    setVeiculos(dadosVeiculos);
-    setModelos(dadosModelos);
-  })
-  .catch(() => setErro("Erro ao carregar os dados."));
+  
+  useEffect(() => {
+    Promise.all([
+      manutencaoService.listar(),
+      veiculoService.listar(),
+      modeloService.listar(),
+    ])
+      .then(([dadosManutencoes, dadosVeiculos, dadosModelos]) => {
+        setManutencoes(dadosManutencoes);
+        setVeiculos(dadosVeiculos);
+        setModelos(dadosModelos);
+      } )
+      .catch(() => {
+        setErro("Erro ao carregar os dados.");
+      });
+  }, []);
+
 
   async function carregarManutencoes() {
     const dados = await manutencaoService.listar();
@@ -59,6 +67,7 @@ Promise.all([
     setValor("");
     setVeiculoId("");
     setEditandoId(null);
+    setStatusManutencao("CONCLUIDA");
   }
 
   async function salvar(event: FormEvent<HTMLFormElement>) {
@@ -85,9 +94,21 @@ Promise.all([
       descricao: descricao.trim(),
       valor: valorNumero,
       veiculoId,
+      status: statusManutencao,
     };
 
     try {
+      if (statusManutencao === "EM_ANDAMENTO") {
+        const locacoes = await locacaoService.listar();
+
+        const veiculoLocado = locacoes.some(
+        (locacao) => locacao.veiculoId === veiculoId &&locacao.status === "ABERTA");
+
+      if (veiculoLocado) {
+        setErro("Não é possível iniciar manutenção em um veículo locado.");
+      return;
+    }
+  }
       if (editandoId) {
         await manutencaoService.atualizar(editandoId, manutencao);
       } else {
@@ -104,7 +125,7 @@ Promise.all([
 
   function editar(item: Manutencao) {
     if (!item.id) return;
-
+    setStatusManutencao(item.status ?? "CONCLUIDA");
     setData(item.data);
     setDescricao(item.descricao);
     setValor(String(item.valor));
@@ -169,6 +190,22 @@ Promise.all([
           currency: "BRL",
         }),
     },
+    {
+      header: "Situação",
+      render: (m) => (
+        <span
+        className={
+        m.status === "EM_ANDAMENTO"
+          ? "badge bg-danger"
+          : "badge bg-success"
+        }
+      >
+      {m.status === "EM_ANDAMENTO"
+        ? "Em andamento"
+        : "Concluída"}
+        </span>
+      ),
+    },
   ];
 
   return (
@@ -193,6 +230,21 @@ Promise.all([
           value={veiculoId}
           options={opcoesVeiculos}
           onChange={(e) => setVeiculoId(e.target.value)}
+        />
+
+        <Select
+          label="Situação da manutenção"
+          name="statusManutencao"
+          value={statusManutencao}
+          options={[
+            { value: "CONCLUIDA", label: "Concluída" },
+            { value: "EM_ANDAMENTO", label: "Em andamento" },
+          ]}
+          onChange={(e) =>
+            setStatusManutencao(
+              e.target.value as StatusManutencao
+            )
+          }
         />
 
         <TextArea

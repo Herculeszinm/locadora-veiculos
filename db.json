@@ -85,7 +85,7 @@
       "placa": "DEF4G56",
       "anoFabricacao": 2024,
       "cor": "Branco",
-      "kmRodado": 22000,
+      "kmRodado": 22500,
       "modeloId": "2"
     },
     {
@@ -112,6 +112,14 @@
       "valor": 15000,
       "veiculoId": "1",
       "id": "MG5VzBxn3lU"
+    },
+    {
+      "data": "2026-11-24",
+      "descricao": "Arrumar a roda",
+      "valor": 120,
+      "veiculoId": "1",
+      "status": "CONCLUIDA",
+      "id": "OlTx_LEZaj8"
     }
   ],
   "clientes": [
@@ -176,8 +184,10 @@
       "dataDevolucaoPrevista": "2026-05-10",
       "kmRetirada": 22000,
       "valorTotal": 900,
-      "status": "ABERTA",
-      "id": "GXgxM_iaSSc"
+      "status": "FINALIZADA",
+      "id": "GXgxM_iaSSc",
+      "dataDevolucaoReal": "2026-05-10",
+      "kmDevolucao": 22500
     },
     {
       "clienteId": "2",
@@ -231,6 +241,24 @@
       "observacoes": "Devolução sem avarias",
       "locacaoId": "MHHUbqUXSxM",
       "id": "ayHInbHhZns"
+    },
+    {
+      "tipo": "RETIRADA",
+      "data": "2026-05-05",
+      "km": 22000,
+      "nivelCombustivel": "CHEIO",
+      "observacoes": "carro em perfeito estado",
+      "locacaoId": "GXgxM_iaSSc",
+      "id": "wnPURwgY4G0"
+    },
+    {
+      "tipo": "DEVOLUCAO",
+      "data": "2026-05-10",
+      "km": 22500,
+      "nivelCombustivel": "3/4",
+      "observacoes": "carro devolvido em perfeito estado",
+      "locacaoId": "GXgxM_iaSSc",
+      "id": "EZmrdZLjAuU"
     }
   ],
   "pagamentos": [
@@ -249,6 +277,14 @@
       "forma": "DINHEIRO",
       "status": "PAGO",
       "id": "t1zBGF5_AbA"
+    },
+    {
+      "locacaoId": "GXgxM_iaSSc",
+      "data": "2026-11-25",
+      "valor": 900,
+      "forma": "PIX",
+      "status": "PAGO",
+      "id": "yrcJrecpXds"
     }
   ],
   "notasFiscais": [

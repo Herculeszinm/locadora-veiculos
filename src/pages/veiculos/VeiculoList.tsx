@@ -5,9 +5,13 @@ import type { FormEvent } from "react";
 import type { Veiculo } from "../../models/Veiculo";
 import type { Modelo } from "../../models/Modelo";
 import type { TableColumn } from "../../components/Table";
+import type { Locacao } from "../../models/Locacao";
+import type { Manutencao } from "../../models/Manutencao";
 
 import { veiculoService } from "../../service/veiculoService";
 import { modeloService } from "../../service/modeloService";
+import { locacaoService } from "../../service/locacaoService";
+import { manutencaoService } from "../../service/manutencaoService";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -19,6 +23,8 @@ import { Modal } from "../../components/Modal";
 export function VeiculoList() {
   const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
   const [modelos, setModelos] = useState<Modelo[]>([]);
+  const [locacoes, setLocacoes] = useState<Locacao[]>([]);
+  const [manutencoes, setManutencoes] = useState<Manutencao[]>([]);
 
   const [placa, setPlaca] = useState("");
   const [chassi, setChassi] = useState("");
@@ -28,8 +34,7 @@ export function VeiculoList() {
   const [modeloId, setModeloId] = useState("");
 
   const [editandoId, setEditandoId] = useState<string | null>(null);
-  const [veiculoParaExcluir, setVeiculoParaExcluir] =
-    useState<Veiculo | null>(null);
+  const [veiculoParaExcluir, setVeiculoParaExcluir] = useState<Veiculo | null>(null);
 
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
@@ -39,17 +44,28 @@ export function VeiculoList() {
     setVeiculos(dados);
   }
 
+  
   useEffect(() => {
     Promise.all([
       veiculoService.listar(),
       modeloService.listar(),
+      locacaoService.listar(),
+      manutencaoService.listar(),
     ])
-      .then(([dadosVeiculos, dadosModelos]) => {
+      .then(([
+        dadosVeiculos,
+        dadosModelos,
+        dadosLocacoes,
+        dadosManutencoes,
+      ]) => {
         setVeiculos(dadosVeiculos);
         setModelos(dadosModelos);
+        setLocacoes(dadosLocacoes);
+        setManutencoes(dadosManutencoes);
       })
       .catch(() => setErro("Erro ao carregar dados."));
   }, []);
+
 
   function limparFormulario() {
     setPlaca("");
@@ -171,6 +187,22 @@ export function VeiculoList() {
     }
   }
 
+  function obterStatusVeiculo(
+    veiculo: Veiculo): "DISPONIVEL" | "LOCADO" | "EM_MANUTENCAO" {
+    const estaLocado = locacoes.some((locacao) =>locacao.veiculoId === veiculo.id &&locacao.status === "ABERTA");
+
+    if (estaLocado) {
+      return "LOCADO";
+    }
+    const estaEmManutencao = manutencoes.some((manutencao) =>manutencao.veiculoId === veiculo.id &&manutencao.status === "EM_ANDAMENTO");
+    if (estaEmManutencao) {
+    return "EM_MANUTENCAO";
+    }
+
+    return "DISPONIVEL";
+  }
+
+
   const columns: TableColumn<Veiculo>[] = [
     {
       header: "Placa",
@@ -198,6 +230,37 @@ export function VeiculoList() {
       header: "KM",
       render: (veiculo) => veiculo.kmRodado,
     },
+
+  {
+      header: "Situação",
+      render: (veiculo) => {
+        const status = obterStatusVeiculo(veiculo);
+
+        const configuracao = {
+          DISPONIVEL: {
+            texto: "Disponível",
+            classe: "bg-success",
+          },
+          LOCADO: {
+            texto: "Locado",
+            classe: "bg-warning text-dark",
+          },
+          EM_MANUTENCAO: {
+            texto: "Em manutenção",
+            classe: "bg-danger",
+          },
+        };
+
+        const atual = configuracao[status];
+
+        return (
+          <span className={`badge ${atual.classe}`}>
+            {atual.texto}
+          </span>
+        );
+      },
+    },
+
   ];
 
   return (

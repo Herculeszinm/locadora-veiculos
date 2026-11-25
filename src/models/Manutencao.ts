@@ -1,10 +1,15 @@
 
+export type StatusManutencao =
+  | "EM_ANDAMENTO"
+  | "CONCLUIDA";
+
 export interface Manutencao {
   id?: string;
   data: string;
   descricao: string;
   valor: number;
   veiculoId: string;
+  status?: StatusManutencao;
 }
 
 export const manutencaoInicial: Manutencao = {
@@ -12,4 +17,5 @@ export const manutencaoInicial: Manutencao = {
   descricao: "",
   valor: 0,
   veiculoId: "",
+  status: "CONCLUIDA",
 };

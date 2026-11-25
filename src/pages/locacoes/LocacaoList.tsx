@@ -9,6 +9,7 @@ import type { Categoria } from "../../models/Categoria";
 import type { Locacao } from "../../models/Locacao";
 import type { Contrato } from "../../models/Contrato";
 import type { TableColumn } from "../../components/Table";
+import type { Manutencao } from "../../models/Manutencao";
 
 import {
   calcularDiarias,
@@ -21,6 +22,7 @@ import { modeloService } from "../../service/modeloService";
 import { categoriaService } from "../../service/categoriaService";
 import { locacaoService } from "../../service/locacaoService";
 import { contratoService } from "../../service/contratoService";
+import { manutencaoService } from "../../service/manutencaoService";
 
 import { Button } from "../../components/Button";
 import { Select } from "../../components/Select";
@@ -38,6 +40,7 @@ export function LocacaoList() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [locacoes, setLocacoes] = useState<Locacao[]>([]);
   const [contratos, setContratos] = useState<Contrato[]>([]);
+  const [manutencoes, setManutencoes] = useState<Manutencao[]>([]);
 
   const [clienteId, setClienteId] = useState("");
   const [veiculoId, setVeiculoId] = useState("");
@@ -72,6 +75,7 @@ export function LocacaoList() {
       dadosCategorias,
       dadosLocacoes,
       dadosContratos,
+      dadosManutencoes,
     ] = await Promise.all([
       clienteService.listar(),
       veiculoService.listar(),
@@ -79,6 +83,7 @@ export function LocacaoList() {
       categoriaService.listar(),
       locacaoService.listar(),
       contratoService.listar(),
+      manutencaoService.listar(),
     ]);
 
     setClientes(dadosClientes);
@@ -87,6 +92,7 @@ export function LocacaoList() {
     setCategorias(dadosCategorias);
     setLocacoes(dadosLocacoes);
     setContratos(dadosContratos);
+    setManutencoes(dadosManutencoes);
   }
 
   useEffect(() => {
@@ -95,14 +101,13 @@ export function LocacaoList() {
     );
   }, []);
 
-  const veiculosDisponiveis = veiculos.filter(
-    (veiculo) =>
-      !locacoes.some(
-        (locacao) =>
-          locacao.veiculoId === veiculo.id &&
-          locacao.status === "ABERTA"
-      )
-  );
+  
+const veiculosDisponiveis = veiculos.filter((veiculo) => {
+  const locado = locacoes.some((locacao) =>locacao.veiculoId === veiculo.id &&locacao.status === "ABERTA");
+  const emManutencao = manutencoes.some((manutencao) =>manutencao.veiculoId === veiculo.id &&manutencao.status === "EM_ANDAMENTO");
+    return !locado && !emManutencao;
+  });
+
 
   function nomeModelo(veiculo: Veiculo): string {
     return (
@@ -188,6 +193,18 @@ export function LocacaoList() {
         await carregarDados();
         return;
       }
+
+      const manutencoesAtuais =
+        await manutencaoService.listar();
+
+      const emManutencao = manutencoesAtuais.some((manutencao) =>manutencao.veiculoId === veiculoId &&manutencao.status === "EM_ANDAMENTO");
+
+      if (emManutencao) {
+        setErro("Este veículo está em manutenção e não pode ser alugado.");
+        await carregarDados();
+        return;
+      }
+
 
       const novaLocacao: Locacao = {
         clienteId,
