@@ -29,6 +29,8 @@ import { Alert } from "../../components/Alert";
 import { Table } from "../../components/Table";
 import { Card } from "../../components/Card";
 
+import { Link } from "react-router-dom";
+
 export function LocacaoList() {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [veiculos, setVeiculos] = useState<Veiculo[]>([]);
@@ -304,6 +306,21 @@ export function LocacaoList() {
         contratos.find((c) => c.locacaoId === locacao.id)
           ?.numero ?? "Não encontrado",
     },
+
+    {
+      header: "Detalhes",
+      render: (locacao) => locacao.id ? (
+      <Link
+        to={`/locacoes/${locacao.id}`}
+        className="btn btn-primary btn-sm"
+      >
+        Ver detalhes
+      </Link>
+    ) : (
+      "-"
+    ),
+},
+
   ];
 
   return (

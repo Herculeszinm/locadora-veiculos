@@ -11,6 +11,7 @@ import { LocacaoList } from "./pages/locacoes/LocacaoList";
 import { LocacaoOperacoes } from "./pages/locacoes/LocacaoOperacoes";
 import { PagamentoList } from "./pages/pagamentos/PagamentoList";
 import { NotaFiscalList } from "./pages/notasFiscais/NotaFiscalList";
+import { LocacaoDetalhe } from "./pages/locacoes/LocacaoDetalhe";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Navbar />
 
       <Routes>
+        <Route path="/locacoes/:id"element={<LocacaoDetalhe />}/>
         <Route path="/notas-fiscais" element={<NotaFiscalList />} />
         <Route path="/pagamentos" element={<PagamentoList />} />
         <Route path="/vistorias" element={<LocacaoOperacoes />}/>
