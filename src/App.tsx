@@ -9,6 +9,8 @@ import { ManutencaoList } from "./pages/manutencoes/ManutencaoList";
 import { ClienteList } from "./pages/clientes/ClienteList";
 import { LocacaoList } from "./pages/locacoes/LocacaoList";
 import { LocacaoOperacoes } from "./pages/locacoes/LocacaoOperacoes";
+import { PagamentoList } from "./pages/pagamentos/PagamentoList";
+import { NotaFiscalList } from "./pages/notasFiscais/NotaFiscalList";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
       <Navbar />
 
       <Routes>
+        <Route path="/notas-fiscais" element={<NotaFiscalList />} />
+        <Route path="/pagamentos" element={<PagamentoList />} />
         <Route path="/vistorias" element={<LocacaoOperacoes />}/>
         <Route path="/locacoes" element={<LocacaoList />} />
         <Route path="/clientes" element={<ClienteList />} />

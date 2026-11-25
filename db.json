@@ -233,7 +233,33 @@
       "id": "ayHInbHhZns"
     }
   ],
-  "pagamentos": [],
-  "notasFiscais": [],
+  "pagamentos": [
+    {
+      "locacaoId": "MHHUbqUXSxM",
+      "data": "2026-06-29",
+      "valor": 200,
+      "forma": "PIX",
+      "status": "PAGO",
+      "id": "e0nSI6VaTVY"
+    },
+    {
+      "locacaoId": "MHHUbqUXSxM",
+      "data": "2026-06-30",
+      "valor": 300,
+      "forma": "DINHEIRO",
+      "status": "PAGO",
+      "id": "t1zBGF5_AbA"
+    }
+  ],
+  "notasFiscais": [
+    {
+      "numero": "NF-559ce75e-10e1-4b78-953f-a25f0ee9bfe0",
+      "serie": "1",
+      "dataEmissao": "2026-11-25",
+      "valor": 600,
+      "locacaoId": "MHHUbqUXSxM",
+      "id": "dA3PwVUJj6Y"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
