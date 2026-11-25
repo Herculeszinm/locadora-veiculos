@@ -7,6 +7,8 @@ import { ModeloList } from "./pages/modelos/ModeloList";
 import { VeiculoList } from "./pages/veiculos/VeiculoList";
 import { ManutencaoList } from "./pages/manutencoes/ManutencaoList";
 import { ClienteList } from "./pages/clientes/ClienteList";
+import { LocacaoList } from "./pages/locacoes/LocacaoList";
+import { LocacaoOperacoes } from "./pages/locacoes/LocacaoOperacoes";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Navbar />
 
       <Routes>
+        <Route path="/vistorias" element={<LocacaoOperacoes />}/>
+        <Route path="/locacoes" element={<LocacaoList />} />
         <Route path="/clientes" element={<ClienteList />} />
         <Route path="/manutencoes" element={<ManutencaoList />} />
         <Route path="/veiculos" element={<VeiculoList />} />

@@ -76,7 +76,7 @@
       "placa": "ABC1D23",
       "anoFabricacao": 2024,
       "cor": "Prata",
-      "kmRodado": 15000,
+      "kmRodado": 15350,
       "modeloId": "1"
     },
     {
@@ -144,11 +144,95 @@
       "telefone": "62999990003",
       "email": "pedro@example.com",
       "endereco": "Rua C, 300"
+    },
+    {
+      "nome": "teste",
+      "cpf": "12345678911",
+      "cnh": "11222333444",
+      "validadeCnh": "2025-02-12",
+      "telefone": "62987876565",
+      "email": "emailteste@email.com",
+      "endereco": "Rua A, 400",
+      "id": "DIiYalJOhwU"
     }
   ],
-  "locacoes": [],
-  "contratos": [],
-  "vistorias": [],
+  "locacoes": [
+    {
+      "clienteId": "1",
+      "veiculoId": "1",
+      "dataRetirada": "2026-06-25",
+      "dataDevolucaoPrevista": "2026-06-29",
+      "kmRetirada": 15000,
+      "valorTotal": 600,
+      "status": "FINALIZADA",
+      "id": "MHHUbqUXSxM",
+      "dataDevolucaoReal": "2026-06-30",
+      "kmDevolucao": 15350
+    },
+    {
+      "clienteId": "1",
+      "veiculoId": "2",
+      "dataRetirada": "2026-05-05",
+      "dataDevolucaoPrevista": "2026-05-10",
+      "kmRetirada": 22000,
+      "valorTotal": 900,
+      "status": "ABERTA",
+      "id": "GXgxM_iaSSc"
+    },
+    {
+      "clienteId": "2",
+      "veiculoId": "3",
+      "dataRetirada": "2026-10-05",
+      "dataDevolucaoPrevista": "2026-10-10",
+      "kmRetirada": 8000,
+      "valorTotal": 1250,
+      "status": "ABERTA",
+      "id": "kcFjhn2a_6o"
+    }
+  ],
+  "contratos": [
+    {
+      "numero": "CONT-026e0d67-8e9e-4dce-8fa8-7004bc21fb0e",
+      "dataEmissao": "2026-11-25",
+      "locacaoId": "MHHUbqUXSxM",
+      "termos": "Contrato de locação de veículo. O cliente se compromete a devolver o veículo nas condições e data estabelecidas. Valor previsto: R$ 480,00",
+      "id": "r04jTTF_CCY"
+    },
+    {
+      "numero": "CONT-a4b38773-d55c-49f6-b3e6-eafc609c778f",
+      "dataEmissao": "2026-11-25",
+      "locacaoId": "GXgxM_iaSSc",
+      "termos": "Contrato de locação de veículo. O cliente se compromete a devolver o veículo nas condições e data estabelecidas. Valor previsto: R$ 900,00",
+      "id": "VwHRX8zR07k"
+    },
+    {
+      "numero": "CONT-517079dc-8b41-427c-85de-53db0570b023",
+      "dataEmissao": "2026-11-25",
+      "locacaoId": "kcFjhn2a_6o",
+      "termos": "Contrato de locação de veículo. O cliente se compromete a devolver o veículo nas condições e data estabelecidas. Valor previsto: R$ 1.250,00",
+      "id": "0BUNKMz3r-0"
+    }
+  ],
+  "vistorias": [
+    {
+      "tipo": "RETIRADA",
+      "data": "2026-06-25",
+      "km": 15000,
+      "nivelCombustivel": "CHEIO",
+      "observacoes": "Veiculo sem avarias",
+      "locacaoId": "MHHUbqUXSxM",
+      "id": "I7lV65Gg4yI"
+    },
+    {
+      "tipo": "DEVOLUCAO",
+      "data": "2026-06-30",
+      "km": 15350,
+      "nivelCombustivel": "1/2",
+      "observacoes": "Devolução sem avarias",
+      "locacaoId": "MHHUbqUXSxM",
+      "id": "ayHInbHhZns"
+    }
+  ],
   "pagamentos": [],
   "notasFiscais": [],
   "$schema": "./node_modules/json-server/schema.json"

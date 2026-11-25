@@ -43,6 +43,9 @@ export function Navbar({ title = "Locadora de Veículos" }: NavbarProps) {
           <NavLink className="nav-link text-white" to="/locacoes">
             Locações
           </NavLink>
+          <NavLink className="nav-link text-white" to="/vistorias">
+            Vistorias e Devoluções
+          </NavLink>
         </div>
       </div>
     </nav>
