@@ -2,11 +2,10 @@
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Categoria } from "../../models/Categoria";
-import type { Modelo } from "../../models/Modelo";
 import type { TableColumn } from "../../components/Table";
 
 import { categoriaService } from "../../service/categoriaService";
-import { api } from "../../service/api";
+import { modeloService } from "../../service/modeloService";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -88,9 +87,9 @@ export function CategoriaList() {
     if (!categoria.id) return;
 
     try {
-      const resposta = await api.get<Modelo[]>("/modelos");
+      const modelos = await modeloService.listar();
 
-      if (resposta.data.some(
+      if (modelos.some(
         (modelo) => modelo.categoriaId === categoria.id
       )) {
         setErro("Esta categoria possui modelos vinculados e não pode ser excluída.");

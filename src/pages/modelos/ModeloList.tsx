@@ -10,7 +10,7 @@ import type { TableColumn } from "../../components/Table";
 import { modeloService } from "../../service/modeloService";
 import { marcaService } from "../../service/marcaService";
 import { categoriaService } from "../../service/categoriaService";
-import { api } from "../../service/api";
+import { veiculoService } from "../../service/veiculoService";
 
 import { Button } from "../../components/Button";
 import { Input } from "../../components/Input";
@@ -19,9 +19,6 @@ import { Table } from "../../components/Table";
 import { Alert } from "../../components/Alert";
 import { Modal } from "../../components/Modal";
 
-interface VeiculoVinculado {
-  modeloId: string;
-}
 
 export function ModeloList() {
   const [modelos, setModelos] = useState<Modelo[]>([]);
@@ -128,9 +125,9 @@ export function ModeloList() {
     if (!modelo.id) return;
 
     try {
-      const resposta = await api.get<VeiculoVinculado[]>("/veiculos");
+      const veiculos = await veiculoService.listar();
 
-      if (resposta.data.some(
+      if (veiculos.some(
         (veiculo) => veiculo.modeloId === modelo.id
       )) {
         setErro("Este modelo possui veículos vinculados e não pode ser excluído.");

@@ -8,8 +8,7 @@ import { Table } from "../../components/Table";
 import type { TableColumn } from "../../components/Table";
 import { Alert } from "../../components/Alert";
 import { Modal } from "../../components/Modal";
-import { api } from "../../service/api";
-import type { Modelo } from "../../models/Modelo";
+import { modeloService } from "../../service/modeloService";
 
 export function MarcaList() {
   const [marcas, setMarcas] = useState<Marca[]>([]);
@@ -78,9 +77,9 @@ export function MarcaList() {
     if (!marca.id) return;
 
     try {
-      const modelos = await api.get<Modelo[]>("/modelos");
+      const modelos = await modeloService.listar();
 
-      if (modelos.data.some((modelo) => modelo.marcaId === marca.id)) {
+      if (modelos.some((modelo) => modelo.marcaId === marca.id)) {
         setErro("Esta marca possui modelos vinculados e não pode ser excluída.");
         return;
       }
